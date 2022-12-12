@@ -1,0 +1,40 @@
+filename = "input1.txt"
+def part1(filename):
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+
+    ans = 0
+    run_sum = 0
+
+    for line in lines:
+        try:
+            line = int(line)
+            run_sum += int(line)
+
+        except:
+            ans = max(run_sum, ans)
+            run_sum = 0
+
+    return ans
+
+def part2(filename):
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+
+    ans = [0, 0, 0]
+    run_sum = 0
+
+    for line in lines:
+        try:
+            line = int(line)
+            run_sum += int(line)
+
+        except:
+            ans.sort()
+            ans[0] = max(ans[0], run_sum)
+            run_sum = 0
+
+    return sum(ans)
+
+print(part1(filename))
+print(part2(filename))

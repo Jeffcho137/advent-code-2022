@@ -1,0 +1,28 @@
+filename = "input6.txt"
+def part1(filename, scale = 4):
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+    line = lines[0].strip()
+    length = len(line)
+ 
+
+    
+    start = 0
+    end = scale
+    while end < length:
+        string = line[start:end]
+        string_list = list(string)
+        string_set = set(string)
+        if len(string_list) == len(string_set):
+            return end
+
+        else:
+            start += 1
+            end += 1
+
+# part 1
+print(part1(filename))
+
+# part 2
+# only changed length
+print(part1(filename, 14))

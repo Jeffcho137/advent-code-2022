@@ -1,0 +1,129 @@
+filename = "input5.txt"
+SCALE_FACTOR = 4
+
+class move:
+    def __init__(self, quant, start, end, data):
+        self.num = quant
+        self.start = start - 1
+        self.end = end - 1
+        self.data = data
+    
+    def process(self):
+        for i in range(self.num):
+            value = self.data[self.start].pop()
+            self.data[self.end].append(value)
+
+    def clever_process(self):
+        toadd = []
+        for i in range(self.num):
+            value = self.data[self.start].pop()
+            toadd.insert(0, value)
+        
+        for value in toadd:
+            self.data[self.end].append(value)
+
+    def get_data(self):
+        return self.data
+
+def part1(filename):
+    graph = []
+    index = 0
+    length = 0
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+    for line in lines:
+        if len(line) <= 1:
+            break
+        else:
+            length = len(line)
+            index += 1
+            graph.append(list(line))
+    
+    graph.pop()
+    
+    num_col = length//SCALE_FACTOR
+    steps = lines[index + 1:]
+    
+    data = []
+    for i in range(num_col):
+        data.append([])
+    
+    for j in range(len(graph)):
+        for i in range(1, length, SCALE_FACTOR):
+            ind = i//4
+            char = graph[j][i]
+            
+            if char.isalnum():
+                
+                data[ind].insert(0, char)
+            
+    # process the steps:
+    for i in range(len(steps)):
+        steps[i] = steps[i].strip("\n")
+        steps[i] = steps[i].split()
+    
+    
+
+    for step in steps:
+        obj = move(int(step[1]), int(step[3]), int(step[5]), data)
+        obj.process()
+        data = obj.get_data()
+    
+    ans = ""
+    for row in data:
+        ans += row[-1]
+    
+    return ans
+    
+def part2(filename):
+    graph = []
+    index = 0
+    length = 0
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+    for line in lines:
+        if len(line) <= 1:
+            break
+        else:
+            length = len(line)
+            index += 1
+            graph.append(list(line))
+    
+    graph.pop()
+    
+    num_col = length//SCALE_FACTOR
+    steps = lines[index + 1:]
+    
+    data = []
+    for i in range(num_col):
+        data.append([])
+    
+    for j in range(len(graph)):
+        for i in range(1, length, SCALE_FACTOR):
+            ind = i//4
+            char = graph[j][i]
+            
+            if char.isalnum():
+                
+                data[ind].insert(0, char)
+            
+    # process the steps:
+    for i in range(len(steps)):
+        steps[i] = steps[i].strip("\n")
+        steps[i] = steps[i].split()
+    
+    
+
+    for step in steps:
+        obj = move(int(step[1]), int(step[3]), int(step[5]), data)
+        obj.clever_process()
+        data = obj.get_data()
+    
+    ans = ""
+    for row in data:
+        ans += row[-1]
+    
+    return ans
+
+print(part1(filename))
+print(part2(filename))

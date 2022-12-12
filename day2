@@ -1,0 +1,176 @@
+'''
+A = Rock
+B = Paper
+C = Scissors
+
+X = Rock
+Y = Paper
+Z = Scissors
+
+'''
+
+class Day2:
+    def __init__(self, opponent, response):
+        self.opp = opponent
+        self.res = response
+        self.win = 0
+        self.points = 0
+    
+    def process(self):
+        self.process_opponent()
+        self.process_response()
+        self.winner()
+
+    def process_response(self):
+        if self.res == "X":
+            self.res = "Rock"
+            self.points += 1
+
+        elif self.res == "Y":
+            self.res = "Paper"
+            self.points += 2
+        else: 
+            self.res = "Scissors"
+            self.points += 3
+
+    def process_opponent(self):
+        if self.opp == "A":
+            self.opp = "Rock"
+
+        elif self.opp == "B":
+            self.opp = "Paper"
+        else: 
+            self.opp = "Scissors"
+
+
+    def winner(self):
+        rules = {"Scissors":"Rock",
+        "Paper":"Scissors",
+        "Rock":"Paper"}
+
+        if rules[self.opp] == self.res:
+            self.win = 2
+            self.points += 6
+
+        elif rules[self.res] == self.opp:
+            self.win = 0
+            self.points += 0
+        
+        else:
+            self.win = 1
+            self.points += 3
+
+    def get_points(self):
+        return self.points
+
+filename = "input2.txt"
+def part1(filename):
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+
+    ans = 0
+
+    for line in lines:
+        vals = line.split()
+        obj = Day2(vals[0], vals[1])
+        obj.process()
+        points = int(obj.get_points())
+        ans += points
+
+    return ans
+
+'''
+A = Rock
+B = Paper
+C = Scissors
+
+X = Lose
+Y = Draw
+Z = Win
+
+'''
+
+class Part2:
+    def __init__(self, opponent, outcome):
+        self.opp = opponent
+        self.outcome = outcome
+        self.res = ""
+        self.win = 0
+        self.points = 0
+        self.rules = {"Scissors":"Rock",
+        "Paper":"Scissors",
+        "Rock":"Paper"}
+    
+    def process(self):
+        self.process_opponent()
+        self.process_outcome()
+        self.find_res()
+        self.process_response()
+        
+
+    def find_res(self):
+        # lose
+        if self.win == 0:
+            for key in self.rules:
+                if self.rules[key] == self.opp:
+                    self.res = key
+                    break
+        # draw
+        elif self.win == 1:
+            self.res = self.opp
+        # win
+        else:
+            self.res = self.rules[self.opp]
+
+    def process_response(self):
+        if self.res == "Rock":
+            self.points += 1
+
+        elif self.res == "Paper":
+            self.points += 2
+        else: 
+            self.res = "Scissors"
+            self.points += 3
+
+    def process_outcome(self):
+        if self.outcome == "X":
+            self.win += 0
+            self.points += 0
+
+        elif self.outcome == "Y":
+            self.win += 1
+            self.points += 3
+        else: 
+            self.win += 2
+            self.points += 6
+
+    def process_opponent(self):
+        if self.opp == "A":
+            self.opp = "Rock"
+
+        elif self.opp == "B":
+            self.opp = "Paper"
+        else: 
+            self.opp = "Scissors"
+
+    def get_points(self):
+        return self.points
+
+def part2(filename):
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+
+    ans = 0
+
+    for line in lines:
+        vals = line.split()
+        obj = Part2(vals[0], vals[1])
+        obj.process()
+        points = int(obj.get_points())
+        ans += points
+
+    return ans
+
+print(part1(filename))
+print(part2(filename))
+

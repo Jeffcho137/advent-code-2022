@@ -1,0 +1,93 @@
+filename = "input4.txt"
+
+class Pairs:
+    def __init__(self, elf1_low, elf1_high, elf2_low, elf2_high):
+        self.l1 = int(elf1_low)
+        self.e1 = int(elf1_high)
+        self.l2 = int(elf2_low)
+        self.e2 = int(elf2_high)
+        self.contain = False
+        self.overlap = False
+
+    def process(self):
+        self.is_contained()
+        self.is_overlapped()
+
+    def is_overlapped(self):
+        if (self.l1 <= self.e2 and self.l1 >= self.l2) or (self.e1 <= self.e2 and self.e1 >= self.l2):
+            self.overlap = True
+        
+        elif (self.l2 <= self.e1 and self.l2 >= self.l1) or (self.e2 <= self.e1 and self.e2 >= self.l1):
+            self.overlap = True
+        
+        else:
+            self.overlap = False
+    def is_contained(self):
+        # if elf 1 is in elf 2
+        if self.l1 <= self.e2 and self.l1 >= self.l2 and self.e1 <= self.e2 and self.e1 >= self.l2:
+            self.contain = True
+        
+        # if elf 2 is in elf 1
+        elif self.l2 <= self.e1 and self.l2 >= self.l1 and self.e2 <= self.e1 and self.e2 >= self.l1:
+            self.contain = True
+        
+        else:
+            self.contain = False
+
+    def get_value_overlap(self):
+        if self.overlap:
+            return 1
+        
+        else:
+            return 0
+
+    def get_value_contain(self):
+        if self.contain:
+            return 1
+        
+        else:
+            return 0
+        
+def part1(filename):
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+    ans = 0
+
+    for line in lines:
+        new_line = line.strip()
+        assignments = new_line.split(',')
+        ranges = []
+        for endpoints in assignments:
+            endpoints = endpoints.split('-')
+
+            ranges.append(endpoints)
+
+        elves = Pairs(ranges[0][0], ranges[0][1], ranges[1][0], ranges[1][1])
+        elves.process()
+        ans += elves.get_value_contain()
+    
+    return ans
+
+def part2(filename):
+    f1 = open(filename, "r")
+    lines = f1.readlines()
+    ans = 0
+
+    for line in lines:
+        new_line = line.strip()
+        assignments = new_line.split(',')
+        ranges = []
+        for endpoints in assignments:
+            endpoints = endpoints.split('-')
+
+            ranges.append(endpoints)
+
+        elves = Pairs(ranges[0][0], ranges[0][1], ranges[1][0], ranges[1][1])
+        elves.process()
+        ans += elves.get_value_overlap()
+    
+    return ans
+
+
+print(part1(filename))
+print(part2(filename))
